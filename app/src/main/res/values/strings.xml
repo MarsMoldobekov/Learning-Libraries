@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Learning Libraries</string>
+    <string name="counter_one">Counter #1</string>
+    <string name="counter_two">Counter #2</string>
+    <string name="counter_three">Counter #3</string>
+    <string name="activity_main_button_initial_text_value">0</string>
+</resources>
