@@ -1,5 +1,7 @@
 package com.example.learninglibraries.ui
 
+import com.example.learninglibraries.presenter.Presenter
+
 interface MainView {
-    fun setButtonText(index: Int, text: String)
+    fun setButtonText(buttonCounter: Presenter.ButtonCounters, text: String)
 }

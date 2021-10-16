@@ -3,13 +3,21 @@ package com.example.learninglibraries.ui
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import com.example.learninglibraries.R
 import com.example.learninglibraries.databinding.ActivityMainBinding
 import com.example.learninglibraries.presenter.Presenter
 
 class MainActivity : AppCompatActivity(), MainView {
     private lateinit var binding: ActivityMainBinding
     private val presenter = Presenter(this)
-    private val listener = View.OnClickListener { presenter.counterClick(it.id) }
+
+    private val listener = View.OnClickListener {
+        when (it.id) {
+            R.id.button_counter_1 -> presenter.counterClick(Presenter.ButtonCounters.FIRST)
+            R.id.button_counter_2 -> presenter.counterClick(Presenter.ButtonCounters.SECOND)
+            R.id.button_counter_3 -> presenter.counterClick(Presenter.ButtonCounters.THIRD)
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,11 +31,11 @@ class MainActivity : AppCompatActivity(), MainView {
         }
     }
 
-    override fun setButtonText(index: Int, text: String) {
-        when(index) {
-            1 -> binding.buttonCounter1.text =  text
-            2 -> binding.buttonCounter2.text =  text
-            3 -> binding.buttonCounter3.text =  text
+    override fun setButtonText(buttonCounter: Presenter.ButtonCounters, text: String) {
+        when (buttonCounter) {
+            Presenter.ButtonCounters.FIRST -> binding.buttonCounter1.text = text
+            Presenter.ButtonCounters.SECOND -> binding.buttonCounter2.text = text
+            Presenter.ButtonCounters.THIRD -> binding.buttonCounter3.text = text
         }
     }
 }
