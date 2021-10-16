@@ -1,33 +1,38 @@
 package com.example.learninglibraries.ui
 
 import android.os.Bundle
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.example.learninglibraries.databinding.ActivityMainBinding
 import com.example.learninglibraries.presenter.Presenter
 
 class MainActivity : AppCompatActivity(), MainView {
-    private lateinit var binding: ActivityMainBinding
+    private var binding: ActivityMainBinding? = null
     private val presenter = Presenter(this)
-    private val listener = View.OnClickListener { presenter.counterClick(it.id) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        setContentView(binding?.root)
 
-        with(binding) {
-            buttonCounter1.setOnClickListener(listener)
-            buttonCounter2.setOnClickListener(listener)
-            buttonCounter3.setOnClickListener(listener)
-        }
+        binding?.buttonCounter1?.setOnClickListener { presenter.counterOneClick() }
+        binding?.buttonCounter2?.setOnClickListener { presenter.counterTwoClick() }
+        binding?.buttonCounter3?.setOnClickListener { presenter.counterThreeClick() }
     }
 
-    override fun setButtonText(index: Int, text: String) {
-        when(index) {
-            1 -> binding.buttonCounter1.text =  text
-            2 -> binding.buttonCounter2.text =  text
-            3 -> binding.buttonCounter3.text =  text
-        }
+    override fun onDestroy() {
+        super.onDestroy()
+        binding = null
+    }
+
+    override fun setButtonOneText(text: String) {
+        binding?.buttonCounter1?.text = text
+    }
+
+    override fun setButtonTwoText(text: String) {
+        binding?.buttonCounter2?.text = text
+    }
+
+    override fun setButtonThreeText(text: String) {
+        binding?.buttonCounter3?.text = text
     }
 }
