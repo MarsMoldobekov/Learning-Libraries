@@ -1,48 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<androidx.recyclerview.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/recyclerview_users"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center_horizontal"
-    android:orientation="vertical"
-    android:padding="@dimen/activity_main_root_padding">
-
-    <TextView
-        android:id="@+id/text_view_1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/counter_one" />
-
-    <Button
-        android:id="@+id/button_counter_1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/activity_main_button_initial_text_value"
-        app:layout_constraintTop_toBottomOf="@id/text_view_1" />
-
-    <TextView
-        android:id="@+id/text_view_2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/counter_two" />
-
-    <Button
-        android:id="@+id/button_counter_2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/activity_main_button_initial_text_value"
-        app:layout_constraintTop_toBottomOf="@id/text_view_2" />
-
-    <TextView
-        android:id="@+id/text_view_3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/counter_three" />
-
-    <Button
-        android:id="@+id/button_counter_3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/activity_main_button_initial_text_value"
-        app:layout_constraintTop_toBottomOf="@id/text_view_3" />
-</LinearLayout>
+    android:clipToPadding="false"
+    android:paddingTop="@dimen/activity_main_recyclerview_padding"
+    android:paddingBottom="@dimen/activity_main_recyclerview_padding" />
