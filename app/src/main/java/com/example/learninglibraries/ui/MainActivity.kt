@@ -1,38 +1,37 @@
 package com.example.learninglibraries.ui
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import com.example.learninglibraries.databinding.ActivityMainBinding
-import com.example.learninglibraries.presenter.Presenter
+import com.example.learninglibraries.domain.CountersModel
+import com.example.learninglibraries.presenter.MainPresenter
+import moxy.MvpAppCompatActivity
+import moxy.ktx.moxyPresenter
 
-class MainActivity : AppCompatActivity(), MainView {
-    private var binding: ActivityMainBinding? = null
-    private val presenter = Presenter(this)
+class MainActivity : MvpAppCompatActivity(), MainView {
+    private lateinit var binding: ActivityMainBinding
+    private val presenter by moxyPresenter { MainPresenter(CountersModel()) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding?.root)
+        setContentView(binding.root)
 
-        binding?.buttonCounter1?.setOnClickListener { presenter.counterOneClick() }
-        binding?.buttonCounter2?.setOnClickListener { presenter.counterTwoClick() }
-        binding?.buttonCounter3?.setOnClickListener { presenter.counterThreeClick() }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        binding = null
+        with(binding) {
+            buttonCounter1.setOnClickListener { presenter.counterOneClick() }
+            buttonCounter2.setOnClickListener { presenter.counterTwoClick() }
+            buttonCounter3.setOnClickListener { presenter.counterThreeClick() }
+        }
     }
 
     override fun setButtonOneText(text: String) {
-        binding?.buttonCounter1?.text = text
+        binding.buttonCounter1.text = text
     }
 
     override fun setButtonTwoText(text: String) {
-        binding?.buttonCounter2?.text = text
+        binding.buttonCounter2.text = text
     }
 
     override fun setButtonThreeText(text: String) {
-        binding?.buttonCounter3?.text = text
+        binding.buttonCounter3.text = text
     }
 }
