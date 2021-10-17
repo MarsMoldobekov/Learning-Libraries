@@ -1,18 +1,18 @@
 package com.example.learninglibraries.ui
 
-import android.annotation.SuppressLint
 import android.os.Bundle
-import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.learninglibraries.App
+import com.example.learninglibraries.R
 import com.example.learninglibraries.databinding.ActivityMainBinding
-import com.example.learninglibraries.domain.GithubUserRepository
 import com.example.learninglibraries.presenter.MainPresenter
+import com.github.terrakok.cicerone.androidx.AppNavigator
 import moxy.MvpAppCompatActivity
 import moxy.ktx.moxyPresenter
 
 class MainActivity : MvpAppCompatActivity(), MainView {
     private var binding: ActivityMainBinding? = null
-    private val presenter by moxyPresenter { MainPresenter(GithubUserRepository()) }
-    private var adapter: UserRecyclerViewAdapter? = null
+    private val presenter by moxyPresenter { MainPresenter(App.instance.router, AndroidScreens()) }
+    private val navigator = AppNavigator(this, R.id.container)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,14 +20,22 @@ class MainActivity : MvpAppCompatActivity(), MainView {
         setContentView(binding?.root)
     }
 
-    override fun init() {
-        binding?.recyclerviewUsers?.layoutManager = LinearLayoutManager(this)
-        adapter = UserRecyclerViewAdapter(presenter.usersListPresenter)
-        binding?.recyclerviewUsers?.adapter = adapter
+    override fun onResumeFragments() {
+        super.onResumeFragments()
+        App.instance.navigatorHolder.setNavigator(navigator)
     }
 
-    @SuppressLint("NotifyDataSetChanged")
-    override fun updateList() {
-        adapter?.notifyDataSetChanged()
+    override fun onPause() {
+        super.onPause()
+        App.instance.navigatorHolder.removeNavigator()
+    }
+
+    override fun onBackPressed() {
+        supportFragmentManager.fragments.forEach {
+            if (it is BackButtonListener && it.backPressed()) {
+                return
+            }
+        }
+        presenter.backClicked()
     }
 }
