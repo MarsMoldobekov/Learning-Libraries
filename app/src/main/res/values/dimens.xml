@@ -3,4 +3,5 @@
     <dimen name="activity_main_recyclerview_padding">16dp</dimen>
     <dimen name="row_item_height">50dp</dimen>
     <dimen name="row_item_textView_marginStart">16dp</dimen>
+    <dimen name="user_login_text_view_size">36sp</dimen>
 </resources>

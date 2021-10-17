@@ -1,15 +1,19 @@
 package com.example.learninglibraries.presenter
 
+import android.os.Bundle
 import com.example.learninglibraries.domain.GithubUserRepository
-import com.example.learninglibraries.domain.data.GithubUser
+import com.example.learninglibraries.domain.GithubUser
+import com.example.learninglibraries.ui.IScreens
 import com.example.learninglibraries.ui.UsersView
 import com.example.learninglibraries.ui.UserItemView
+import com.example.learninglibraries.ui.UserPersonalScreenFragment
 import com.github.terrakok.cicerone.Router
 import moxy.MvpPresenter
 
 class UsersPresenter(
     private val githubUserRepository: GithubUserRepository,
-    private val router: Router
+    private val router: Router,
+    private val screens: IScreens
 ) : MvpPresenter<UsersView>() {
 
     class UsersListPresenter : IUserListPresenter {
@@ -26,6 +30,8 @@ class UsersPresenter(
         fun addUsers(listOfGithubUser: List<GithubUser>) {
             users.addAll(listOfGithubUser)
         }
+
+        fun getUserByPosition(pos: Int): GithubUser = users[pos]
     }
 
     val usersListPresenter = UsersListPresenter()
@@ -35,7 +41,12 @@ class UsersPresenter(
         viewState.init()
         loadData()
         usersListPresenter.itemClickListener = { itemView ->
-            //TODO: переход на экран пользователя
+            router.navigateTo(screens.userPersonalScreen(Bundle().apply {
+                putParcelable(
+                    UserPersonalScreenFragment.BUNDLE_EXTRA,
+                    usersListPresenter.getUserByPosition(itemView.pos)
+                )
+            }))
         }
     }
 

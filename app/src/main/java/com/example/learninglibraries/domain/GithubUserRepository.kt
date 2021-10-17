@@ -1,7 +1,5 @@
 package com.example.learninglibraries.domain
 
-import com.example.learninglibraries.domain.data.GithubUser
-
 class GithubUserRepository {
     private val repositories: List<GithubUser> = listOf(
         GithubUser("login1"),

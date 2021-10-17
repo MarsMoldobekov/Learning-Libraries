@@ -19,7 +19,7 @@ class UsersFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
     }
 
     private val presenter by moxyPresenter {
-        UsersPresenter(GithubUserRepository(), App.instance.router)
+        UsersPresenter(GithubUserRepository(), App.instance.router, AndroidScreens())
     }
     private var binding: FragmentUsersBinding? = null
     private var adapter: UserRecyclerViewAdapter? = null

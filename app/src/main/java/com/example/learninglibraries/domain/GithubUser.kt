@@ -1,4 +1,4 @@
-package com.example.learninglibraries.domain.data
+package com.example.learninglibraries.domain
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
