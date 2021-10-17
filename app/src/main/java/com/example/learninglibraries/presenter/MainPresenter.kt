@@ -1,19 +1,41 @@
 package com.example.learninglibraries.presenter
 
-import com.example.learninglibraries.domain.CountersModel
+import com.example.learninglibraries.domain.GithubUserRepository
+import com.example.learninglibraries.domain.data.GithubUser
 import com.example.learninglibraries.ui.MainView
+import com.example.learninglibraries.ui.UserItemView
 import moxy.MvpPresenter
 
-class MainPresenter(private val countersModel: CountersModel) : MvpPresenter<MainView>() {
-    fun counterOneClick() {
-        viewState.setButtonOneText(countersModel.next(0).toString())
+class MainPresenter(private val githubUserRepository: GithubUserRepository) : MvpPresenter<MainView>() {
+    class UsersListPresenter : IUserListPresenter {
+        private val users = mutableListOf<GithubUser>()
+
+        override var itemClickListener: ((UserItemView) -> Unit)? = null
+
+        override fun bindView(view: UserItemView) {
+            view.setLogin(users[view.pos].login)
+        }
+
+        override fun getCount(): Int = users.size
+
+        fun addUsers(listOfGithubUser: List<GithubUser>) {
+            users.addAll(listOfGithubUser)
+        }
     }
 
-    fun counterTwoClick() {
-        viewState.setButtonTwoText(countersModel.next(1).toString())
+    val usersListPresenter = UsersListPresenter()
+
+    override fun onFirstViewAttach() {
+        super.onFirstViewAttach()
+        viewState.init()
+        loadData()
+        usersListPresenter.itemClickListener = { itemView ->
+            //TODO: переход на экран пользователя
+        }
     }
 
-    fun counterThreeClick() {
-        viewState.setButtonThreeText(countersModel.next(2).toString())
+    fun loadData() {
+        usersListPresenter.addUsers(githubUserRepository.getUsers())
+        viewState.updateList()
     }
 }
