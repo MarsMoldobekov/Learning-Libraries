@@ -1,5 +1,7 @@
 package com.example.learninglibraries.domain
 
+import io.reactivex.rxjava3.core.Observable
+
 class GithubUserRepository {
     private val repositories: List<GithubUser> = listOf(
         GithubUser("login1"),
@@ -9,5 +11,5 @@ class GithubUserRepository {
         GithubUser("login5")
     )
 
-    fun getUsers(): List<GithubUser> = repositories
+    fun getUsers(): Observable<GithubUser> = Observable.fromIterable(repositories)
 }
