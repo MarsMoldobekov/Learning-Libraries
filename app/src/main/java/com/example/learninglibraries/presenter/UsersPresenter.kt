@@ -1,13 +1,15 @@
 package com.example.learninglibraries.presenter
 
 import android.os.Bundle
-import com.example.learninglibraries.domain.GithubUserRepository
+import android.util.Log
 import com.example.learninglibraries.domain.GithubUser
+import com.example.learninglibraries.domain.GithubUserRepository
 import com.example.learninglibraries.ui.IScreens
-import com.example.learninglibraries.ui.UsersView
 import com.example.learninglibraries.ui.UserItemView
 import com.example.learninglibraries.ui.UserPersonalScreenFragment
+import com.example.learninglibraries.ui.UsersView
 import com.github.terrakok.cicerone.Router
+import io.reactivex.rxjava3.core.Observable
 import moxy.MvpPresenter
 
 class UsersPresenter(
@@ -27,8 +29,8 @@ class UsersPresenter(
 
         override fun getCount(): Int = users.size
 
-        fun addUsers(listOfGithubUser: List<GithubUser>) {
-            users.addAll(listOfGithubUser)
+        fun addUsers(listOfGithubUser: Observable<GithubUser>) {
+            listOfGithubUser.subscribe({ users.add(it) }, { Log.e("GithubUsers", it.toString()) })
         }
 
         fun getUserByPosition(pos: Int): GithubUser = users[pos]
