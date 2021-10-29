@@ -2,13 +2,15 @@ package com.example.learninglibraries.ui
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.learninglibraries.databinding.ItemUserBinding
 import com.example.learninglibraries.presenter.IUserListPresenter
 
-class UserRecyclerViewAdapter(
-    private val presenter: IUserListPresenter
-) : RecyclerView.Adapter<UserRecyclerViewAdapter.ViewHolder>() {
+class UsersRecyclerViewAdapter(
+    private val presenter: IUserListPresenter,
+    private val imageLoader: IImageLoader<ImageView>
+) : RecyclerView.Adapter<UsersRecyclerViewAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
         ViewHolder(
@@ -26,5 +28,9 @@ class UserRecyclerViewAdapter(
         override var pos = -1
 
         override fun setLogin(text: String) = with(viewBinding) { textViewLogin.text = text }
+
+        override fun loadAvatar(url: String) = with(viewBinding) {
+            imageLoader.loadInto(url, imageViewAvatar)
+        }
     }
 }

@@ -23,7 +23,10 @@ class UsersPresenter(
         override var itemClickListener: ((UserItemView) -> Unit)? = null
 
         override fun bindView(view: UserItemView) {
-            users[view.pos].login?.let { view.setLogin(it) }
+            with(users[view.pos]) {
+                login?.let { view.setLogin(it) }
+                avatarUrl?.let { view.loadAvatar(it) }
+            }
         }
 
         override fun getCount(): Int = users.size

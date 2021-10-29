@@ -29,7 +29,7 @@ class UsersFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
         )
     }
     private var binding: FragmentUsersBinding? = null
-    private var adapter: UserRecyclerViewAdapter? = null
+    private var adapter: UsersRecyclerViewAdapter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,7 +45,7 @@ class UsersFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
 
     override fun init() {
         binding?.recyclerviewUsers?.layoutManager = LinearLayoutManager(context)
-        adapter = UserRecyclerViewAdapter(presenter.usersListPresenter)
+        adapter = UsersRecyclerViewAdapter(presenter.usersListPresenter, GlideImageLoader())
         binding?.recyclerviewUsers?.adapter = adapter
     }
 
