@@ -8,8 +8,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.learninglibraries.App
 import com.example.learninglibraries.databinding.FragmentUsersBinding
-import com.example.learninglibraries.domain.GithubUserRepository
+import com.example.learninglibraries.domain.ApiHolder
+import com.example.learninglibraries.domain.RetrofitGithubUsersRepository
 import com.example.learninglibraries.presenter.UsersPresenter
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 
@@ -19,7 +21,12 @@ class UsersFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
     }
 
     private val presenter by moxyPresenter {
-        UsersPresenter(GithubUserRepository(), App.instance.router, AndroidScreens())
+        UsersPresenter(
+            AndroidSchedulers.mainThread(),
+            RetrofitGithubUsersRepository(ApiHolder.api),
+            App.instance.router,
+            AndroidScreens()
+        )
     }
     private var binding: FragmentUsersBinding? = null
     private var adapter: UserRecyclerViewAdapter? = null

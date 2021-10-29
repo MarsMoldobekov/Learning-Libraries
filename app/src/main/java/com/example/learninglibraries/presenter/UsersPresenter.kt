@@ -1,19 +1,18 @@
 package com.example.learninglibraries.presenter
 
-import android.os.Bundle
-import android.util.Log
 import com.example.learninglibraries.domain.GithubUser
-import com.example.learninglibraries.domain.GithubUserRepository
+import com.example.learninglibraries.domain.IGithubUserRepository
 import com.example.learninglibraries.ui.IScreens
 import com.example.learninglibraries.ui.UserItemView
-import com.example.learninglibraries.ui.UserPersonalScreenFragment
 import com.example.learninglibraries.ui.UsersView
 import com.github.terrakok.cicerone.Router
-import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.core.Scheduler
 import moxy.MvpPresenter
+import timber.log.Timber
 
 class UsersPresenter(
-    private val githubUserRepository: GithubUserRepository,
+    private val uiScheduler: Scheduler,
+    private val githubUserRepository: IGithubUserRepository,
     private val router: Router,
     private val screens: IScreens
 ) : MvpPresenter<UsersView>() {
@@ -24,16 +23,18 @@ class UsersPresenter(
         override var itemClickListener: ((UserItemView) -> Unit)? = null
 
         override fun bindView(view: UserItemView) {
-            view.setLogin(users[view.pos].login)
+            users[view.pos].login?.let { view.setLogin(it) }
         }
 
         override fun getCount(): Int = users.size
 
-        fun addUsers(listOfGithubUser: Observable<GithubUser>) {
-            listOfGithubUser.subscribe({ users.add(it) }, { Log.e("GithubUsers", it.toString()) })
+        fun addUsers(listOfGithubUsers: List<GithubUser>) {
+            users.addAll(listOfGithubUsers)
         }
 
         fun getUserByPosition(pos: Int): GithubUser = users[pos]
+
+        fun clearData(): Unit = users.clear()
     }
 
     val usersListPresenter = UsersListPresenter()
@@ -43,12 +44,9 @@ class UsersPresenter(
         viewState.init()
         loadData()
         usersListPresenter.itemClickListener = { itemView ->
-            router.navigateTo(screens.userPersonalScreen(Bundle().apply {
-                putParcelable(
-                    UserPersonalScreenFragment.BUNDLE_EXTRA,
-                    usersListPresenter.getUserByPosition(itemView.pos)
-                )
-            }))
+            router.navigateTo(
+                screens.userPersonalScreen(usersListPresenter.getUserByPosition(itemView.pos))
+            )
         }
     }
 
@@ -58,7 +56,12 @@ class UsersPresenter(
     }
 
     private fun loadData() {
-        usersListPresenter.addUsers(githubUserRepository.getUsers())
-        viewState.updateList()
+        githubUserRepository.getUsers()
+            .observeOn(uiScheduler)
+            .subscribe({ listOfGithubUsers ->
+                usersListPresenter.clearData()
+                usersListPresenter.addUsers(listOfGithubUsers)
+                viewState.updateList()
+            }, { Timber.d("Error: ${it.message}") })
     }
 }
