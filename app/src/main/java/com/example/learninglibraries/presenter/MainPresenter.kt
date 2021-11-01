@@ -10,7 +10,7 @@ class MainPresenter(private val router: Router, private val screens: IScreens) :
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
-        router.replaceScreen(screens.users())
+        router.replaceScreen(screens.githubUsers())
     }
 
     fun backClicked() {

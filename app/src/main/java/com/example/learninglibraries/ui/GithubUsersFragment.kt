@@ -1,6 +1,5 @@
 package com.example.learninglibraries.ui
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,18 +9,18 @@ import com.example.learninglibraries.App
 import com.example.learninglibraries.databinding.FragmentUsersBinding
 import com.example.learninglibraries.domain.ApiHolder
 import com.example.learninglibraries.domain.RetrofitGithubUsersRepository
-import com.example.learninglibraries.presenter.UsersPresenter
+import com.example.learninglibraries.presenter.GithubUsersPresenter
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 
-class UsersFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
+class GithubUsersFragment : MvpAppCompatFragment(), GithubUsersView, BackButtonListener {
     companion object {
-        fun newInstance() = UsersFragment()
+        fun newInstance() = GithubUsersFragment()
     }
 
     private val presenter by moxyPresenter {
-        UsersPresenter(
+        GithubUsersPresenter(
             AndroidSchedulers.mainThread(),
             RetrofitGithubUsersRepository(ApiHolder.api),
             App.instance.router,
@@ -29,7 +28,7 @@ class UsersFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
         )
     }
     private var binding: FragmentUsersBinding? = null
-    private var adapter: UsersRecyclerViewAdapter? = null
+    private var adapter: GithubUsersRecyclerViewAdapter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,13 +44,12 @@ class UsersFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
 
     override fun init() {
         binding?.recyclerviewUsers?.layoutManager = LinearLayoutManager(context)
-        adapter = UsersRecyclerViewAdapter(presenter.usersListPresenter, GlideImageLoader())
+        adapter = GithubUsersRecyclerViewAdapter(presenter.usersListPresenter, GlideImageLoader())
         binding?.recyclerviewUsers?.adapter = adapter
     }
 
-    @SuppressLint("NotifyDataSetChanged")
-    override fun updateList() {
-        adapter?.notifyDataSetChanged()
+    override fun updateList(count: Int) {
+        adapter?.notifyItemRangeInserted(0, count)
     }
 
     override fun backPressed() = presenter.backPressed()

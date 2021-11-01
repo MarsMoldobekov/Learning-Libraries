@@ -1,23 +1,23 @@
 package com.example.learninglibraries.presenter
 
-import com.example.learninglibraries.domain.GithubUser
+import com.example.learninglibraries.domain.data.GithubUser
 import com.example.learninglibraries.domain.IGithubUserRepository
 import com.example.learninglibraries.ui.IScreens
 import com.example.learninglibraries.ui.UserItemView
-import com.example.learninglibraries.ui.UsersView
+import com.example.learninglibraries.ui.GithubUsersView
 import com.github.terrakok.cicerone.Router
 import io.reactivex.rxjava3.core.Scheduler
 import moxy.MvpPresenter
 import timber.log.Timber
 
-class UsersPresenter(
+class GithubUsersPresenter(
     private val uiScheduler: Scheduler,
     private val githubUserRepository: IGithubUserRepository,
     private val router: Router,
     private val screens: IScreens
-) : MvpPresenter<UsersView>() {
+) : MvpPresenter<GithubUsersView>() {
 
-    class UsersListPresenter : IUserListPresenter {
+    class UsersListPresenter : IGithubUserListPresenter {
         private val users = mutableListOf<GithubUser>()
 
         override var itemClickListener: ((UserItemView) -> Unit)? = null
@@ -48,7 +48,7 @@ class UsersPresenter(
         loadData()
         usersListPresenter.itemClickListener = { itemView ->
             router.navigateTo(
-                screens.userPersonalScreen(usersListPresenter.getUserByPosition(itemView.pos))
+                screens.githubUserPersonalScreen(usersListPresenter.getUserByPosition(itemView.pos))
             )
         }
     }
@@ -59,12 +59,12 @@ class UsersPresenter(
     }
 
     private fun loadData() {
-        githubUserRepository.getUsers()
+        githubUserRepository.getGithubUsers()
             .observeOn(uiScheduler)
             .subscribe({ listOfGithubUsers ->
                 usersListPresenter.clearData()
                 usersListPresenter.addUsers(listOfGithubUsers)
-                viewState.updateList()
+                viewState.updateList(listOfGithubUsers.size)
             }, { Timber.d("Error: ${it.message}") })
     }
 }

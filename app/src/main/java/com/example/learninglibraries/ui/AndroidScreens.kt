@@ -1,21 +1,21 @@
 package com.example.learninglibraries.ui
 
 import android.os.Bundle
-import com.example.learninglibraries.domain.GithubUser
+import com.example.learninglibraries.domain.data.GithubUser
 import com.github.terrakok.cicerone.Screen
 import com.github.terrakok.cicerone.androidx.FragmentScreen
 
 interface IScreens {
-    fun users(): Screen
-    fun userPersonalScreen(githubUser: GithubUser): Screen
+    fun githubUsers(): Screen
+    fun githubUserPersonalScreen(githubUser: GithubUser): Screen
 }
 
 class AndroidScreens : IScreens {
-    override fun users(): Screen = FragmentScreen { UsersFragment.newInstance() }
+    override fun githubUsers(): Screen = FragmentScreen { GithubUsersFragment.newInstance() }
 
-    override fun userPersonalScreen(githubUser: GithubUser): Screen = FragmentScreen {
-        UserPersonalScreenFragment.newInstance(Bundle().apply {
-            putParcelable(UserPersonalScreenFragment.BUNDLE_EXTRA, githubUser)
+    override fun githubUserPersonalScreen(githubUser: GithubUser): Screen = FragmentScreen {
+        GithubUserPersonalScreenFragment.newInstance(Bundle().apply {
+            putParcelable(GithubUserPersonalScreenFragment.BUNDLE_EXTRA, githubUser)
         })
     }
 }

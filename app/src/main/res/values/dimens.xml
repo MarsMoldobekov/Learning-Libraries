@@ -6,4 +6,9 @@
     <dimen name="user_login_text_view_size">36sp</dimen>
     <dimen name="row_item_imageView_size">50dp</dimen>
     <dimen name="row_item_imageView_margin">16dp</dimen>
+    <dimen name="text_view_repositories_size">20sp</dimen>
+    <dimen name="avatar_image_view_width">128dp</dimen>
+    <dimen name="row_item_text_size">16sp</dimen>
+    <dimen name="row_item_title_text_size">24sp</dimen>
+    <dimen name="item_repo_card_margin">5dp</dimen>
 </resources>
