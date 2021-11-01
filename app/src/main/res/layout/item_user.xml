@@ -10,12 +10,11 @@
         android:id="@+id/image_view_avatar"
         android:layout_width="@dimen/row_item_imageView_size"
         android:layout_height="@dimen/row_item_imageView_size"
-        android:layout_margin="@dimen/row_item_imageView_margin" />
+        android:layout_margin="?attr/margin" />
 
     <TextView
         android:id="@+id/text_view_login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/row_item_textView_marginStart" />
-
+        android:layout_marginStart="?attr/margin" />
 </LinearLayout>

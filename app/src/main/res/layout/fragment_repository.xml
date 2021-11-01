@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/repository_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="?attr/margin"
+        android:layout_marginTop="?attr/margin"
+        android:textSize="@dimen/fragment_repository_name_text_size"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="mojobo/asteroids" />
+
+    <TextView
+        android:id="@+id/repository_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="?attr/margin"
+        android:layout_marginTop="24dp"
+        android:text="@string/description"
+        android:textSize="@dimen/fragment_repository_title_textSize"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/repository_name" />
+
+    <TextView
+        android:id="@+id/repository_description_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="?attr/margin"
+        android:layout_marginTop="?attr/margin"
+        android:text="@string/repo_no_description"
+        android:textSize="@dimen/row_item_text_size"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/repository_description"
+        tools:text="Destroy your Atom editor, Asteroids style!" />
+
+    <TextView
+        android:id="@+id/repository_forks"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="?attr/margin"
+        android:layout_marginTop="@dimen/fragment_repository_marginTop"
+        android:text="@string/forks"
+        android:textSize="@dimen/fragment_repository_title_textSize"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/repository_description_value" />
+
+    <TextView
+        android:id="@+id/repository_forks_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="?attr/margin"
+        android:layout_marginTop="?attr/margin"
+        android:text="@string/repo_forks_count"
+        android:textSize="@dimen/row_item_text_size"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/repository_forks" />
+
+    <TextView
+        android:id="@+id/repository_forks_count_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/fragment_repository_values_marginStart"
+        android:layout_marginTop="?attr/margin"
+        android:text="@string/repo_no_forks"
+        android:textSize="@dimen/row_item_text_size"
+        app:layout_constraintBottom_toBottomOf="@id/repository_forks_count"
+        app:layout_constraintStart_toEndOf="@id/repository_forks_count"
+        tools:text="4" />
+</androidx.constraintlayout.widget.ConstraintLayout>

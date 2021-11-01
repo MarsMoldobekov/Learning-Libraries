@@ -16,7 +16,7 @@ import moxy.ktx.moxyPresenter
 
 class GithubUserPersonalScreenFragment : MvpAppCompatFragment(), GithubUserView, BackButtonListener {
     companion object {
-        const val BUNDLE_EXTRA = "user_personal_screen"
+        const val BUNDLE_EXTRA_USER_PERSONAL_SCREEN = "user_personal_screen"
 
         fun newInstance(bundle: Bundle) = GithubUserPersonalScreenFragment().apply { arguments = bundle }
     }
@@ -26,7 +26,8 @@ class GithubUserPersonalScreenFragment : MvpAppCompatFragment(), GithubUserView,
             AndroidSchedulers.mainThread(),
             RetrofitGithubUsersRepository(ApiHolder.api),
             App.instance.router,
-            arguments?.getParcelable(BUNDLE_EXTRA))
+            AndroidScreens(),
+            arguments?.getParcelable(BUNDLE_EXTRA_USER_PERSONAL_SCREEN))
     }
     private var adapter: GithubUserReposRecyclerViewAdapter? = null
     private var binding: FragmentUserPersonalScreenBinding? = null

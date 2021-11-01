@@ -24,7 +24,7 @@ class GithubUserReposRecyclerViewAdapter(private val presenter: IGithubUserRepos
 
         override var pos: Int = -1
 
-        override fun setRepoName(name: String) = with(viewBinding) { repoName.text = name }
+        override fun setRepoName(name: String) = with(viewBinding) { repositoryName.text = name }
 
         override fun setRepoDescription(description: String) =
             with(viewBinding) { repoDescription.text = description }

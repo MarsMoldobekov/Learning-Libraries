@@ -5,6 +5,7 @@ import com.example.learninglibraries.domain.data.GithubUser
 import com.example.learninglibraries.domain.data.GithubUserRepos
 import com.example.learninglibraries.ui.GithubUserRepoItemView
 import com.example.learninglibraries.ui.GithubUserView
+import com.example.learninglibraries.ui.IScreens
 import com.github.terrakok.cicerone.Router
 import io.reactivex.rxjava3.core.Scheduler
 import moxy.MvpPresenter
@@ -14,6 +15,7 @@ class GithubUserPersonalScreenPresenter(
     private val uiScheduler: Scheduler,
     private val githubUserRepository: IGithubUserRepository,
     private val router: Router,
+    private val screens: IScreens,
     private val user: GithubUser?
 ) : MvpPresenter<GithubUserView>() {
 
@@ -49,7 +51,9 @@ class GithubUserPersonalScreenPresenter(
         user?.login?.let { viewState.setLogin(it) }
         user?.avatarUrl?.let { viewState.loadAvatar(it) }
         githubUserReposListPresenter.itemClickListener = { itemView ->
-            githubUserReposListPresenter.getRepoByPosition(itemView.pos)
+            router.navigateTo(
+                screens.repository(githubUserReposListPresenter.getRepoByPosition(itemView.pos))
+            )
         }
     }
 

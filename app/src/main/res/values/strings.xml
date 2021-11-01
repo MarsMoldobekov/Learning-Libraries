@@ -1,5 +1,9 @@
 <resources>
     <string name="app_name">Learning Libraries</string>
     <string name="repositories">Repositories</string>
-    <string name="repo_desciption">NO DESCRIPTION</string>
+    <string name="description">Description</string>
+    <string name="repo_no_description">NO DESCRIPTION</string>
+    <string name="forks">Forks</string>
+    <string name="repo_forks_count">Forks count:</string>
+    <string name="repo_no_forks">0</string>
 </resources>
