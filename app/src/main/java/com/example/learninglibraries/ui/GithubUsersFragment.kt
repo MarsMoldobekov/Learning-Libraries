@@ -20,12 +20,12 @@ class GithubUsersFragment : MvpAppCompatFragment(), GithubUsersView, BackButtonL
     }
 
     private val presenter by moxyPresenter {
-        GithubUsersPresenter(
-            AndroidSchedulers.mainThread(),
-            RetrofitGithubUsersRepository(ApiHolder.api),
-            App.instance.router,
-            AndroidScreens()
-        )
+        GithubUsersPresenter.build {
+            uiScheduler = AndroidSchedulers.mainThread()
+            githubUserRepository = RetrofitGithubUsersRepository(ApiHolder.api)
+            router = App.instance.router
+            screens = AndroidScreens()
+        }
     }
     private var binding: FragmentUsersBinding? = null
     private var adapter: GithubUsersRecyclerViewAdapter? = null

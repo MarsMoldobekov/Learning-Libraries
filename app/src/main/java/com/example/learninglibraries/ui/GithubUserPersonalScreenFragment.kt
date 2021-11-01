@@ -22,12 +22,13 @@ class GithubUserPersonalScreenFragment : MvpAppCompatFragment(), GithubUserView,
     }
 
     private val presenter by moxyPresenter {
-        GithubUserPersonalScreenPresenter(
-            AndroidSchedulers.mainThread(),
-            RetrofitGithubUsersRepository(ApiHolder.api),
-            App.instance.router,
-            AndroidScreens(),
-            arguments?.getParcelable(BUNDLE_EXTRA_USER_PERSONAL_SCREEN))
+        GithubUserPersonalScreenPresenter.build {
+            uiScheduler = AndroidSchedulers.mainThread()
+            githubUserRepository = RetrofitGithubUsersRepository(ApiHolder.api)
+            router = App.instance.router
+            screens = AndroidScreens()
+            user = arguments?.getParcelable(BUNDLE_EXTRA_USER_PERSONAL_SCREEN)
+        }
     }
     private var adapter: GithubUserReposRecyclerViewAdapter? = null
     private var binding: FragmentUserPersonalScreenBinding? = null
