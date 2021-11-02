@@ -1,5 +1,6 @@
 package com.example.learninglibraries.presenter
 
+import androidx.recyclerview.widget.DiffUtil
 import com.example.learninglibraries.domain.IGithubUserRepository
 import com.example.learninglibraries.domain.data.GithubUser
 import com.example.learninglibraries.domain.data.GithubUserRepos
@@ -55,13 +56,32 @@ class GithubUserPersonalScreenPresenter private constructor(
 
         override fun getCount(): Int = repos.size
 
-        fun addUsers(listOfRepos: List<GithubUserRepos>) {
-            repos.addAll(listOfRepos)
+        fun addUsers(listOfRepos: List<GithubUserRepos>): DiffUtil.DiffResult {
+            val diffResult = DiffUtil.calculateDiff(RepositoriesDiffUtilCallback(repos, listOfRepos))
+            with(repos) {
+                clear()
+                addAll(listOfRepos)
+            }
+            return diffResult
         }
 
         fun getRepoByPosition(pos: Int): GithubUserRepos = repos[pos]
+    }
 
-        fun clearData(): Unit = repos.clear()
+    class RepositoriesDiffUtilCallback(
+        private val oldList: List<GithubUserRepos>,
+        private val newList: List<GithubUserRepos>
+    ) : DiffUtil.Callback() {
+
+        override fun getOldListSize(): Int = oldList.size
+
+        override fun getNewListSize(): Int = newList.size
+
+        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
+            oldList[oldItemPosition].id == newList[newItemPosition].id
+
+        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
+            oldList[oldItemPosition] == newList[newItemPosition]
     }
 
     val githubUserReposListPresenter = GithubUserReposListPresenter()
@@ -89,9 +109,7 @@ class GithubUserPersonalScreenPresenter private constructor(
             githubUserRepository?.getGithubUserRepos(user.reposUrl)
                 ?.observeOn(uiScheduler)
                 ?.subscribe({ repos ->
-                    githubUserReposListPresenter.clearData()
-                    githubUserReposListPresenter.addUsers(repos)
-                    viewState.updateList(repos.size)
+                    viewState.updateList(githubUserReposListPresenter.addUsers(repos))
                 }, { throwable -> Timber.d("Error: ${throwable.message}") })
         }
     }

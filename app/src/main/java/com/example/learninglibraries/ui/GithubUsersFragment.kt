@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.learninglibraries.App
 import com.example.learninglibraries.databinding.FragmentUsersBinding
@@ -48,8 +49,8 @@ class GithubUsersFragment : MvpAppCompatFragment(), GithubUsersView, BackButtonL
         binding?.recyclerviewUsers?.adapter = adapter
     }
 
-    override fun updateList(count: Int) {
-        adapter?.notifyItemRangeInserted(0, count)
+    override fun updateList(diffResult: DiffUtil.DiffResult) {
+        adapter?.let { diffResult.dispatchUpdatesTo(it) }
     }
 
     override fun backPressed() = presenter.backPressed()

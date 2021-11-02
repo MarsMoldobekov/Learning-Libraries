@@ -1,5 +1,6 @@
 package com.example.learninglibraries.presenter
 
+import androidx.recyclerview.widget.DiffUtil
 import com.example.learninglibraries.domain.IGithubUserRepository
 import com.example.learninglibraries.domain.data.GithubUser
 import com.example.learninglibraries.ui.GithubUsersView
@@ -10,13 +11,12 @@ import io.reactivex.rxjava3.core.Scheduler
 import moxy.MvpPresenter
 import timber.log.Timber
 
-class GithubUsersPresenter(
+class GithubUsersPresenter private constructor(
     private val uiScheduler: Scheduler?,
     private val githubUserRepository: IGithubUserRepository?,
     private val router: Router?,
     private val screens: IScreens?
 ) : MvpPresenter<GithubUsersView>() {
-
     private constructor(builder: Builder) : this(
         builder.uiScheduler,
         builder.githubUserRepository,
@@ -51,13 +51,32 @@ class GithubUsersPresenter(
 
         override fun getCount(): Int = users.size
 
-        fun addUsers(listOfGithubUsers: List<GithubUser>) {
-            users.addAll(listOfGithubUsers)
+        fun addUsers(listOfGithubUsers: List<GithubUser>): DiffUtil.DiffResult {
+            val diffResult = DiffUtil.calculateDiff(UsersDiffUtilCallback(users, listOfGithubUsers))
+            with(users) {
+                clear()
+                addAll(listOfGithubUsers)
+            }
+            return diffResult
         }
 
         fun getUserByPosition(pos: Int): GithubUser = users[pos]
+    }
 
-        fun clearData(): Unit = users.clear()
+    class UsersDiffUtilCallback(
+        private val oldList: List<GithubUser>,
+        private val newList: List<GithubUser>
+    ) : DiffUtil.Callback() {
+
+        override fun getOldListSize(): Int = oldList.size
+
+        override fun getNewListSize(): Int = newList.size
+
+        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
+            oldList[oldItemPosition].id == newList[newItemPosition].id
+
+        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
+            oldList[oldItemPosition] == newList[newItemPosition]
     }
 
     val usersListPresenter = UsersListPresenter()
@@ -82,9 +101,7 @@ class GithubUsersPresenter(
             githubUserRepository?.getGithubUsers()
                 ?.observeOn(uiScheduler)
                 ?.subscribe({ listOfGithubUsers ->
-                    usersListPresenter.clearData()
-                    usersListPresenter.addUsers(listOfGithubUsers)
-                    viewState.updateList(listOfGithubUsers.size)
+                    viewState.updateList(usersListPresenter.addUsers(listOfGithubUsers))
                 }, { Timber.d("Error: ${it.message}") })
         }
     }

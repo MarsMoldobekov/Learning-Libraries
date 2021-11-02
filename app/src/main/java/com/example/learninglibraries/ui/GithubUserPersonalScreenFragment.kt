@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.learninglibraries.App
 import com.example.learninglibraries.databinding.FragmentUserPersonalScreenBinding
@@ -18,7 +19,8 @@ class GithubUserPersonalScreenFragment : MvpAppCompatFragment(), GithubUserView,
     companion object {
         const val BUNDLE_EXTRA_USER_PERSONAL_SCREEN = "user_personal_screen"
 
-        fun newInstance(bundle: Bundle) = GithubUserPersonalScreenFragment().apply { arguments = bundle }
+        fun newInstance(bundle: Bundle) = GithubUserPersonalScreenFragment()
+            .apply { arguments = bundle }
     }
 
     private val presenter by moxyPresenter {
@@ -61,7 +63,7 @@ class GithubUserPersonalScreenFragment : MvpAppCompatFragment(), GithubUserView,
         binding?.repositories?.adapter = adapter
     }
 
-    override fun updateList(count: Int) {
-        adapter?.notifyItemRangeInserted(0, count)
+    override fun updateList(diffResult: DiffUtil.DiffResult) {
+        adapter?.let { diffResult.dispatchUpdatesTo(it) }
     }
 }
