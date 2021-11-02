@@ -1,17 +1,29 @@
 package com.example.learninglibraries.ui
 
 import android.os.Bundle
+import com.example.learninglibraries.domain.data.GithubUser
+import com.example.learninglibraries.domain.data.GithubUserRepos
 import com.github.terrakok.cicerone.Screen
 import com.github.terrakok.cicerone.androidx.FragmentScreen
 
 interface IScreens {
-    fun users(): Screen
-    fun userPersonalScreen(bundle: Bundle): Screen
+    fun githubUsers(): Screen
+    fun githubUserPersonalScreen(githubUser: GithubUser): Screen
+    fun repository(githubUserRepos: GithubUserRepos): Screen
 }
 
 class AndroidScreens : IScreens {
-    override fun users(): Screen = FragmentScreen { UsersFragment.newInstance() }
+    override fun githubUsers(): Screen = FragmentScreen { GithubUsersFragment.newInstance() }
 
-    override fun userPersonalScreen(bundle: Bundle): Screen =
-        FragmentScreen { UserPersonalScreenFragment.newInstance(bundle) }
+    override fun githubUserPersonalScreen(githubUser: GithubUser): Screen = FragmentScreen {
+        GithubUserPersonalScreenFragment.newInstance(Bundle().apply {
+            putParcelable(GithubUserPersonalScreenFragment.BUNDLE_EXTRA_USER_PERSONAL_SCREEN, githubUser)
+        })
+    }
+
+    override fun repository(githubUserRepos: GithubUserRepos): Screen = FragmentScreen {
+        RepositoryFragment.newInstance(Bundle().apply {
+            putParcelable(RepositoryFragment.BUNDLE_EXTRA_REPOSITORY, githubUserRepos)
+        })
+    }
 }

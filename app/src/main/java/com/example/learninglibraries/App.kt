@@ -3,6 +3,7 @@ package com.example.learninglibraries
 import android.app.Application
 import com.github.terrakok.cicerone.Cicerone
 import com.github.terrakok.cicerone.Router
+import timber.log.Timber
 
 class App : Application() {
     companion object {
@@ -16,5 +17,8 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
         instance = this
+        if (BuildConfig.DEBUG) {
+            Timber.plant(Timber.DebugTree())
+        }
     }
 }

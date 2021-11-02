@@ -1,5 +1,6 @@
 package com.example.learninglibraries.presenter
 
+import com.example.learninglibraries.ui.GithubUserRepoItemView
 import com.example.learninglibraries.ui.IItemView
 import com.example.learninglibraries.ui.UserItemView
 
@@ -9,4 +10,6 @@ interface IListPresenter<V: IItemView> {
     fun getCount(): Int
 }
 
-interface IUserListPresenter : IListPresenter<UserItemView>
+interface IGithubUserListPresenter : IListPresenter<UserItemView>
+
+interface IGithubUserReposPresenter : IListPresenter<GithubUserRepoItemView>
