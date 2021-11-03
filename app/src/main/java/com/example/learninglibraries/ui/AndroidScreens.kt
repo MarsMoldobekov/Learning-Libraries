@@ -1,8 +1,8 @@
 package com.example.learninglibraries.ui
 
 import android.os.Bundle
-import com.example.learninglibraries.domain.data.GithubUser
-import com.example.learninglibraries.domain.data.GithubUserRepos
+import com.example.learninglibraries.domain.net.data.GithubUser
+import com.example.learninglibraries.domain.net.data.GithubUserRepos
 import com.github.terrakok.cicerone.Screen
 import com.github.terrakok.cicerone.androidx.FragmentScreen
 

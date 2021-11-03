@@ -8,8 +8,8 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.learninglibraries.App
 import com.example.learninglibraries.databinding.FragmentUserPersonalScreenBinding
-import com.example.learninglibraries.domain.ApiHolder
-import com.example.learninglibraries.domain.RetrofitGithubUsersRepository
+import com.example.learninglibraries.domain.net.ApiHolder
+import com.example.learninglibraries.domain.net.RetrofitGithubUsersRepository
 import com.example.learninglibraries.presenter.GithubUserPersonalScreenPresenter
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import moxy.MvpAppCompatFragment

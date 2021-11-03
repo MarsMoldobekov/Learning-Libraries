@@ -1,6 +1,6 @@
 package com.example.learninglibraries.presenter
 
-import com.example.learninglibraries.domain.data.GithubUserRepos
+import com.example.learninglibraries.domain.net.data.GithubUserRepos
 import com.example.learninglibraries.ui.RepositoryView
 import com.github.terrakok.cicerone.Router
 import moxy.MvpPresenter

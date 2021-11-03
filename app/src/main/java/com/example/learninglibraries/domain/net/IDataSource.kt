@@ -1,7 +1,7 @@
-package com.example.learninglibraries.domain
+package com.example.learninglibraries.domain.net
 
-import com.example.learninglibraries.domain.data.GithubUser
-import com.example.learninglibraries.domain.data.GithubUserRepos
+import com.example.learninglibraries.domain.net.data.GithubUser
+import com.example.learninglibraries.domain.net.data.GithubUserRepos
 import io.reactivex.rxjava3.core.Single
 import retrofit2.http.GET
 import retrofit2.http.Url

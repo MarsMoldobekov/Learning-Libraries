@@ -1,4 +1,4 @@
-package com.example.learninglibraries.domain
+package com.example.learninglibraries.domain.net
 
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.GsonBuilder

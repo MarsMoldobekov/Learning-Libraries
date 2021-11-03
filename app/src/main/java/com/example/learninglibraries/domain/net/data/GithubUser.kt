@@ -1,4 +1,4 @@
-package com.example.learninglibraries.domain.data
+package com.example.learninglibraries.domain.net.data
 
 import android.os.Parcelable
 import com.google.gson.annotations.Expose
