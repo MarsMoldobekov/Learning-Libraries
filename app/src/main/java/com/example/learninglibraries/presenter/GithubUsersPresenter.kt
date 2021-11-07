@@ -1,7 +1,7 @@
 package com.example.learninglibraries.presenter
 
 import androidx.recyclerview.widget.DiffUtil
-import com.example.learninglibraries.domain.net.IGithubUserRepository
+import com.example.learninglibraries.domain.IGithubUserRepository
 import com.example.learninglibraries.domain.net.data.GithubUser
 import com.example.learninglibraries.ui.GithubUsersView
 import com.example.learninglibraries.ui.IScreens

@@ -6,8 +6,10 @@ import kotlinx.parcelize.Parcelize
 
 //topics not included
 //private not included
+//license not included
 @Parcelize
-data class GithubUserRepos(
+data class GithubRepository(
+    @Expose val id: Long?,
     @Expose val allowForking: Boolean?,
     @Expose val archiveUrl: String?,
     @Expose val archived: Boolean?,
@@ -45,7 +47,6 @@ data class GithubUserRepos(
     @Expose val homepage: String?,
     @Expose val hooksUrl: String?,
     @Expose val htmlUrl: String?,
-    @Expose val id: Int?,
     @Expose val isTemplate: Boolean?,
     @Expose val issueCommentUrl: String?,
     @Expose val issueEventsUrl: String?,
@@ -54,7 +55,6 @@ data class GithubUserRepos(
     @Expose val labelsUrl: String?,
     @Expose val language: String?,
     @Expose val languagesUrl: String?,
-    @Expose val license: License?,
     @Expose val mergesUrl: String?,
     @Expose val milestonesUrl: String?,
     @Expose val mirrorUrl: String?,

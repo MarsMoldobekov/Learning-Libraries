@@ -1,6 +1,7 @@
 package com.example.learninglibraries
 
 import android.app.Application
+import com.example.learninglibraries.domain.database.Database
 import com.github.terrakok.cicerone.Cicerone
 import com.github.terrakok.cicerone.Router
 import timber.log.Timber
@@ -17,6 +18,7 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
         instance = this
+        Database.create(this)
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
         }

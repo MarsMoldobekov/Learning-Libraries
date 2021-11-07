@@ -1,9 +1,9 @@
 package com.example.learninglibraries.presenter
 
 import androidx.recyclerview.widget.DiffUtil
-import com.example.learninglibraries.domain.net.IGithubUserRepository
+import com.example.learninglibraries.domain.GithubRepositoriesRepository
 import com.example.learninglibraries.domain.net.data.GithubUser
-import com.example.learninglibraries.domain.net.data.GithubUserRepos
+import com.example.learninglibraries.domain.net.data.GithubRepository
 import com.example.learninglibraries.ui.GithubUserRepoItemView
 import com.example.learninglibraries.ui.GithubUserView
 import com.example.learninglibraries.ui.IScreens
@@ -14,7 +14,7 @@ import timber.log.Timber
 
 class GithubUserPersonalScreenPresenter private constructor(
     private val uiScheduler: Scheduler?,
-    private val githubUserRepository: IGithubUserRepository?,
+    private val githubRepositoriesRepository: GithubRepositoriesRepository?,
     private val router: Router?,
     private val screens: IScreens?,
     private val user: GithubUser?
@@ -22,7 +22,7 @@ class GithubUserPersonalScreenPresenter private constructor(
 
     private constructor(builder: Builder) : this(
         builder.uiScheduler,
-        builder.githubUserRepository,
+        builder.githubRepositoriesRepository,
         builder.router,
         builder.screens,
         builder.user
@@ -34,7 +34,7 @@ class GithubUserPersonalScreenPresenter private constructor(
 
     class Builder {
         var uiScheduler: Scheduler? = null
-        var githubUserRepository: IGithubUserRepository? = null
+        var githubRepositoriesRepository: GithubRepositoriesRepository? = null
         var router: Router? = null
         var screens: IScreens? = null
         var user: GithubUser? = null
@@ -43,7 +43,7 @@ class GithubUserPersonalScreenPresenter private constructor(
     }
 
     class GithubUserReposListPresenter : IGithubUserReposPresenter {
-        private val repos = mutableListOf<GithubUserRepos>()
+        private val repos = mutableListOf<GithubRepository>()
 
         override var itemClickListener: ((GithubUserRepoItemView) -> Unit)? = null
 
@@ -56,7 +56,7 @@ class GithubUserPersonalScreenPresenter private constructor(
 
         override fun getCount(): Int = repos.size
 
-        fun addUsers(listOfRepos: List<GithubUserRepos>): DiffUtil.DiffResult {
+        fun addUsers(listOfRepos: List<GithubRepository>): DiffUtil.DiffResult {
             val diffResult = DiffUtil.calculateDiff(RepositoriesDiffUtilCallback(repos, listOfRepos))
             with(repos) {
                 clear()
@@ -65,12 +65,12 @@ class GithubUserPersonalScreenPresenter private constructor(
             return diffResult
         }
 
-        fun getRepoByPosition(pos: Int): GithubUserRepos = repos[pos]
+        fun getRepoByPosition(pos: Int): GithubRepository = repos[pos]
     }
 
     class RepositoriesDiffUtilCallback(
-        private val oldList: List<GithubUserRepos>,
-        private val newList: List<GithubUserRepos>
+        private val oldList: List<GithubRepository>,
+        private val newList: List<GithubRepository>
     ) : DiffUtil.Callback() {
 
         override fun getOldListSize(): Int = oldList.size
@@ -105,8 +105,8 @@ class GithubUserPersonalScreenPresenter private constructor(
     }
 
     private fun loadData() {
-        if (user?.reposUrl != null && uiScheduler != null) {
-            githubUserRepository?.getGithubUserRepos(user.reposUrl)
+        if (user?.reposUrl != null && user.login != null && uiScheduler != null) {
+            githubRepositoriesRepository?.getGithubRepositories(user.reposUrl, user.login)
                 ?.observeOn(uiScheduler)
                 ?.subscribe({ repos ->
                     viewState.updateList(githubUserReposListPresenter.addUsers(repos))

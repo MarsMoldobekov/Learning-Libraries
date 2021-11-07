@@ -35,6 +35,6 @@ interface RepositoryDao {
     @Query("SELECT * FROM RoomGithubRepository")
     fun getAll(): List<RoomGithubRepository>
 
-    @Query("SELECT * FROM RoomGithubRepository WHERE owner_id = :ownerId LIMIT 1")
-    fun findByLogin(ownerId: String): RoomGithubRepository?
+    @Query("SELECT * FROM RoomGithubRepository WHERE owner = :owner")
+    fun findForUser(owner: Long): List<RoomGithubRepository>
 }

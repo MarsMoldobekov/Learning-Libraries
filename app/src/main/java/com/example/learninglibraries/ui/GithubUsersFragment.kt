@@ -8,8 +8,9 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.learninglibraries.App
 import com.example.learninglibraries.databinding.FragmentUsersBinding
+import com.example.learninglibraries.domain.database.Database
 import com.example.learninglibraries.domain.net.ApiHolder
-import com.example.learninglibraries.domain.net.RetrofitGithubUsersRepository
+import com.example.learninglibraries.domain.GithubUsersRepository
 import com.example.learninglibraries.presenter.GithubUsersPresenter
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import moxy.MvpAppCompatFragment
@@ -23,7 +24,11 @@ class GithubUsersFragment : MvpAppCompatFragment(), GithubUsersView, BackButtonL
     private val presenter by moxyPresenter {
         GithubUsersPresenter.build {
             uiScheduler = AndroidSchedulers.mainThread()
-            githubUserRepository = RetrofitGithubUsersRepository(ApiHolder.api)
+            githubUserRepository = GithubUsersRepository(
+                ApiHolder.api,
+                AndroidNetworkStatus(requireContext()),
+                Database.getInstance()
+            )
             router = App.instance.router
             screens = AndroidScreens()
         }
