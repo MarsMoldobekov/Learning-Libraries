@@ -12,9 +12,7 @@ class RepositoryPresenter(private val router: Router, private val repository: Gi
         super.onFirstViewAttach()
         repository?.fullName?.let { viewState.setLogin(it) }
         repository?.description?.let { viewState.setDescription(it) }
-        if (repository?.fork == true) {
-            repository.forksCount?.let { viewState.setForksCount(it) }
-        }
+        repository?.forksCount?.let { viewState.setForksCount(it) }
     }
 
     fun backPressed(): Boolean {

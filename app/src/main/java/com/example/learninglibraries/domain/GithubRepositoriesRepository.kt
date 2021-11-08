@@ -1,6 +1,7 @@
 package com.example.learninglibraries.domain
 
 import com.example.learninglibraries.domain.database.Database
+import com.example.learninglibraries.domain.database.entities.RoomGithubRepository
 import com.example.learninglibraries.domain.net.IDataSource
 import com.example.learninglibraries.domain.net.data.GithubRepository
 import com.example.learninglibraries.domain.util.Mapper
@@ -17,25 +18,42 @@ class GithubRepositoriesRepository(
     override fun getGithubRepositories(url: String, login: String): Single<List<GithubRepository>> =
         networkStatus.isOnlineSingle().flatMap { isOnline ->
             if (isOnline) {
-                getGithubRepositoryFromExternalServer(url)
+                getGithubRepositoryFromExternalServer(url, login)
             } else {
                 getGithubRepositoriesFromLocal(login)
             }
         }.subscribeOn(Schedulers.io())
 
-    private fun getGithubRepositoryFromExternalServer(url: String): Single<List<GithubRepository>> =
-        api.getGithubRepositories(url).flatMap { repositories ->
+    private fun getGithubRepositoryFromExternalServer(
+        repositoryUrl: String,
+        userLogin: String
+    ): Single<List<GithubRepository>> {
+        return api.getGithubRepositories(repositoryUrl).flatMap { repositories ->
             Single.fromCallable {
-                database.repositoryDao.insert(repositories.map { Mapper.convert(it) })
+                val roomUser = database.githubUserDao.findByLogin(userLogin)
+                    ?: throw RuntimeException("No such user in cache")
+
+                database.repositoryDao.insert(repositories.map {
+                    RoomGithubRepository(
+                        it.id,
+                        it.description,
+                        it.forksCount,
+                        it.fullName,
+                        it.name,
+                        roomUser.id
+                    )
+                })
+
                 repositories
             }
         }
+    }
 
-    private fun getGithubRepositoriesFromLocal(login: String): Single<List<GithubRepository>> =
+    private fun getGithubRepositoriesFromLocal(userLogin: String): Single<List<GithubRepository>> =
         Single.fromCallable {
-            val roomGithubUser = database.githubUserDao.findByLogin(login)
-            roomGithubUser?.id?.let {
-                database.repositoryDao.findForUser(it).map { Mapper.convert(it) }
+            val roomGithubUser = database.githubUserDao.findByLogin(userLogin)
+            roomGithubUser?.id?.let { userId ->
+                database.repositoryDao.findForUser(userId).map { Mapper.convert(it) }
             }
         }
 }
