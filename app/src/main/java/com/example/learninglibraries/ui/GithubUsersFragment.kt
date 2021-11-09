@@ -11,6 +11,7 @@ import com.example.learninglibraries.databinding.FragmentUsersBinding
 import com.example.learninglibraries.domain.database.Database
 import com.example.learninglibraries.domain.net.ApiHolder
 import com.example.learninglibraries.domain.GithubUsersRepository
+import com.example.learninglibraries.domain.RoomGithubUsersCache
 import com.example.learninglibraries.presenter.GithubUsersPresenter
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import moxy.MvpAppCompatFragment
@@ -27,7 +28,7 @@ class GithubUsersFragment : MvpAppCompatFragment(), GithubUsersView, BackButtonL
             githubUserRepository = GithubUsersRepository(
                 ApiHolder.api,
                 AndroidNetworkStatus(requireContext()),
-                Database.getInstance()
+                RoomGithubUsersCache(Database.getInstance())
             )
             router = App.instance.router
             screens = AndroidScreens()
